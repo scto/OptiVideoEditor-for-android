@@ -23,7 +23,7 @@ buildscript {
     ext.seekbar = '1.0.5'
     ext.GlideToast = '1.0'
     ext.fresco = '1.14.2'
-    ext.sdpSize = '1.0.6'
+    ext.sdpSize = '1.1.1'
 
     repositories {
         google()
