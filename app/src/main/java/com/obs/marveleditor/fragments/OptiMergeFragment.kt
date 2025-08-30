@@ -26,13 +26,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
-import com.obs.marveleditor.utils.OptiConstant
-import com.obs.marveleditor.R
-import com.obs.marveleditor.utils.OptiUtils
-import com.obs.marveleditor.interfaces.OptiDialogueHelper
 import com.facebook.drawee.view.SimpleDraweeView
 import com.obs.marveleditor.OptiVideoEditor
+import com.obs.marveleditor.R
+import com.obs.marveleditor.interfaces.OptiDialogueHelper
 import com.obs.marveleditor.interfaces.OptiFFMpegCallback
+import com.obs.marveleditor.utils.OptiConstant
+import com.obs.marveleditor.utils.OptiUtils
 import java.io.File
 
 class OptiMergeFragment : BottomSheetDialogFragment(), OptiDialogueHelper, OptiFFMpegCallback {
@@ -50,7 +50,11 @@ class OptiMergeFragment : BottomSheetDialogFragment(), OptiDialogueHelper, OptiF
     private var helper: OptiBaseCreatorDialogFragment.CallBacks? = null
     private var mContext: Context? = null
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ): View? {
         rootView = inflater.inflate(R.layout.opti_fragment_merge_dialog, container, false)
         return rootView
     }
@@ -65,16 +69,13 @@ class OptiMergeFragment : BottomSheetDialogFragment(), OptiDialogueHelper, OptiF
 
         mContext = context
 
-        ivClose.setOnClickListener {
-            dismiss()
-        }
+        ivClose.setOnClickListener { dismiss() }
 
         ivDone.setOnClickListener {
-
             if (videoFileOne != null && videoFileTwo != null) {
                 dismiss()
 
-                //output file is generated and send to video processing
+                // output file is generated and send to video processing
                 val outputFile = OptiUtils.createVideoFile(context!!)
                 Log.v(tagName, "outputFile: ${outputFile.absolutePath}")
 
@@ -101,37 +102,47 @@ class OptiMergeFragment : BottomSheetDialogFragment(), OptiDialogueHelper, OptiF
         }
     }
 
-    override fun setMode(mode: Int) {
+    override fun setMode(mode: Int) {}
 
-    }
-
-    override fun setFilePathFromSource(file: File) {
-
-    }
+    override fun setFilePathFromSource(file: File) {}
 
     override fun setHelper(helper: OptiBaseCreatorDialogFragment.CallBacks) {
         this.helper = helper
     }
 
-    override fun setDuration(duration: Long) {
-
-    }
+    override fun setDuration(duration: Long) {}
 
     fun checkPermission(requestCode: Int, permission: String) {
         requestPermissions(arrayOf(permission), requestCode)
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray,
+    ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
             OptiConstant.VIDEO_MERGE_1 -> {
                 for (permission in permissions) {
-                    if (ActivityCompat.shouldShowRequestPermissionRationale(activity as Activity, permission)) {
+                    if (
+                        ActivityCompat.shouldShowRequestPermissionRationale(
+                            activity as Activity,
+                            permission,
+                        )
+                    ) {
                         Toast.makeText(activity, "Permission Denied", Toast.LENGTH_SHORT).show()
                     } else {
-                        if (ActivityCompat.checkSelfPermission(activity as Activity, permission) == PackageManager.PERMISSION_GRANTED) {
-                            //call the gallery intent
-                            val i = Intent(Intent.ACTION_PICK, MediaStore.Video.Media.EXTERNAL_CONTENT_URI)
+                        if (
+                            ActivityCompat.checkSelfPermission(activity as Activity, permission) ==
+                                PackageManager.PERMISSION_GRANTED
+                        ) {
+                            // call the gallery intent
+                            val i =
+                                Intent(
+                                    Intent.ACTION_PICK,
+                                    MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
+                                )
                             i.setType("video/*")
                             i.putExtra(Intent.EXTRA_MIME_TYPES, arrayOf("audio/*", "video/*"))
                             startActivityForResult(i, OptiConstant.VIDEO_MERGE_1)
@@ -145,12 +156,24 @@ class OptiMergeFragment : BottomSheetDialogFragment(), OptiDialogueHelper, OptiF
 
             OptiConstant.VIDEO_MERGE_2 -> {
                 for (permission in permissions) {
-                    if (ActivityCompat.shouldShowRequestPermissionRationale(activity as Activity, permission)) {
+                    if (
+                        ActivityCompat.shouldShowRequestPermissionRationale(
+                            activity as Activity,
+                            permission,
+                        )
+                    ) {
                         Toast.makeText(activity, "Permission Denied", Toast.LENGTH_SHORT).show()
                     } else {
-                        if (ActivityCompat.checkSelfPermission(activity as Activity, permission) == PackageManager.PERMISSION_GRANTED) {
-                            //call the gallery intent
-                            val i = Intent(Intent.ACTION_PICK, MediaStore.Video.Media.EXTERNAL_CONTENT_URI)
+                        if (
+                            ActivityCompat.checkSelfPermission(activity as Activity, permission) ==
+                                PackageManager.PERMISSION_GRANTED
+                        ) {
+                            // call the gallery intent
+                            val i =
+                                Intent(
+                                    Intent.ACTION_PICK,
+                                    MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
+                                )
                             i.setType("video/*")
                             i.putExtra(Intent.EXTRA_MIME_TYPES, arrayOf("audio/*", "video/*"))
                             startActivityForResult(i, OptiConstant.VIDEO_MERGE_2)
@@ -179,15 +202,11 @@ class OptiMergeFragment : BottomSheetDialogFragment(), OptiDialogueHelper, OptiF
 
         when (requestCode) {
             OptiConstant.VIDEO_MERGE_1 -> {
-                data?.let {
-                    setFilePath(resultCode, it, OptiConstant.VIDEO_MERGE_1)
-                }
+                data?.let { setFilePath(resultCode, it, OptiConstant.VIDEO_MERGE_1) }
             }
 
             OptiConstant.VIDEO_MERGE_2 -> {
-                data?.let {
-                    setFilePath(resultCode, it, OptiConstant.VIDEO_MERGE_2)
-                }
+                data?.let { setFilePath(resultCode, it, OptiConstant.VIDEO_MERGE_2) }
             }
         }
     }
@@ -199,34 +218,37 @@ class OptiMergeFragment : BottomSheetDialogFragment(), OptiDialogueHelper, OptiF
                 val selectedImage = data.data
                 //  Log.e("selectedImage==>", "" + selectedImage)
                 val filePathColumn = arrayOf(MediaStore.MediaColumns.DATA)
-                val cursor = context!!.contentResolver
-                    .query(selectedImage!!, filePathColumn, null, null, null)
+                val cursor =
+                    context!!
+                        .contentResolver
+                        .query(selectedImage!!, filePathColumn, null, null, null)
                 if (cursor != null) {
                     cursor.moveToFirst()
-                    val columnIndex = cursor
-                        .getColumnIndex(filePathColumn[0])
+                    val columnIndex = cursor.getColumnIndex(filePathColumn[0])
                     val filePath = cursor.getString(columnIndex)
                     cursor.close()
                     if (mode == OptiConstant.VIDEO_MERGE_1) {
                         videoFileOne = File(filePath)
                         Log.v(tagName, "videoFileOne: " + videoFileOne!!.absolutePath)
 
-                        //get thumbnail of selected video
-                        bmThumbnailOne = ThumbnailUtils.createVideoThumbnail(
-                            videoFileOne!!.absolutePath,
-                            MediaStore.Images.Thumbnails.FULL_SCREEN_KIND
-                        )
+                        // get thumbnail of selected video
+                        bmThumbnailOne =
+                            ThumbnailUtils.createVideoThumbnail(
+                                videoFileOne!!.absolutePath,
+                                MediaStore.Images.Thumbnails.FULL_SCREEN_KIND,
+                            )
 
                         ivVideoOne.setImageBitmap(bmThumbnailOne)
                     } else if (mode == OptiConstant.VIDEO_MERGE_2) {
                         videoFileTwo = File(filePath)
                         Log.v(tagName, "videoFileTwo: " + videoFileTwo!!.absolutePath)
 
-                        //get thumbnail of selected video
-                        bmThumbnailTwo = ThumbnailUtils.createVideoThumbnail(
-                            videoFileTwo!!.absolutePath,
-                            MediaStore.Video.Thumbnails.FULL_SCREEN_KIND
-                        )
+                        // get thumbnail of selected video
+                        bmThumbnailTwo =
+                            ThumbnailUtils.createVideoThumbnail(
+                                videoFileTwo!!.absolutePath,
+                                MediaStore.Video.Thumbnails.FULL_SCREEN_KIND,
+                            )
 
                         ivVideoTwo.setImageBitmap(bmThumbnailTwo)
                     }

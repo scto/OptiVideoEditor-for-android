@@ -18,10 +18,10 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
 import com.github.guilhe.views.SeekBarRangedView
-import com.obs.marveleditor.utils.OptiConstant
 import com.obs.marveleditor.OptiVideoEditor
 import com.obs.marveleditor.R
 import com.obs.marveleditor.interfaces.OptiFFMpegCallback
+import com.obs.marveleditor.utils.OptiConstant
 import com.obs.marveleditor.utils.OptiUtils
 import com.obs.marveleditor.utils.VideoUtils
 import java.io.File
@@ -40,7 +40,11 @@ class OptiTrimFragment : BottomSheetDialogFragment(), OptiFFMpegCallback {
     private var duration: Long? = null
     private var mContext: Context? = null
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ): View? {
         rootView = inflater.inflate(R.layout.opti_fragment_trim, container, false)
         return rootView
     }
@@ -56,12 +60,10 @@ class OptiTrimFragment : BottomSheetDialogFragment(), OptiFFMpegCallback {
 
         mContext = context
 
-        ivClose.setOnClickListener {
-            dismiss()
-        }
+        ivClose.setOnClickListener { dismiss() }
 
         ivDone.setOnClickListener {
-            //output file is generated and send to video processing
+            // output file is generated and send to video processing
             val outputFile = OptiUtils.createVideoFile(context!!)
             Log.v(tagName, "outputFile: ${outputFile.absolutePath}")
 
@@ -86,17 +88,23 @@ class OptiTrimFragment : BottomSheetDialogFragment(), OptiFFMpegCallback {
         actvStartTime?.text = VideoUtils.secToTime(0)
         actvEndTime?.text = VideoUtils.secToTime(duration!!)
 
-        sbrvVideoTrim?.setOnSeekBarRangedChangeListener(object : SeekBarRangedView.OnSeekBarRangedChangeListener {
-            override fun onChanged(view: SeekBarRangedView?, minValue: Float, maxValue: Float) {
-                //exoPlayer?.seekTo(minValue.toLong())
-            }
+        sbrvVideoTrim?.setOnSeekBarRangedChangeListener(
+            object : SeekBarRangedView.OnSeekBarRangedChangeListener {
+                override fun onChanged(view: SeekBarRangedView?, minValue: Float, maxValue: Float) {
+                    // exoPlayer?.seekTo(minValue.toLong())
+                }
 
-            override fun onChanging(view: SeekBarRangedView?, minValue: Float, maxValue: Float) {
-                Log.v(tagName, "minValue: $minValue, maxValue: $maxValue")
-                actvStartTime?.text = VideoUtils.secToTime(minValue.toLong())
-                actvEndTime?.text = VideoUtils.secToTime(maxValue.toLong())
+                override fun onChanging(
+                    view: SeekBarRangedView?,
+                    minValue: Float,
+                    maxValue: Float,
+                ) {
+                    Log.v(tagName, "minValue: $minValue, maxValue: $maxValue")
+                    actvStartTime?.text = VideoUtils.secToTime(minValue.toLong())
+                    actvEndTime?.text = VideoUtils.secToTime(maxValue.toLong())
+                }
             }
-        })
+        )
     }
 
     fun setHelper(helper: OptiBaseCreatorDialogFragment.CallBacks) {
@@ -126,7 +134,7 @@ class OptiTrimFragment : BottomSheetDialogFragment(), OptiFFMpegCallback {
     }
 
     override fun onNotAvailable(error: Exception) {
-        Log.d(tagName,"onNotAvailable() " + error.message)
+        Log.d(tagName, "onNotAvailable() " + error.message)
         Log.v(tagName, "Exception: ${error.localizedMessage}")
     }
 

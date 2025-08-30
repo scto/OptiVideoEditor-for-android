@@ -18,8 +18,11 @@ import android.widget.TextView
 import com.obs.marveleditor.R
 import com.obs.marveleditor.interfaces.OptiFilterListener
 
-class OptiTransitionAdapter (transitionList: ArrayList<String>, val context: Context, optiFilterListener: OptiFilterListener) :
-    RecyclerView.Adapter<OptiTransitionAdapter.MyPostViewHolder>() {
+class OptiTransitionAdapter(
+    transitionList: ArrayList<String>,
+    val context: Context,
+    optiFilterListener: OptiFilterListener,
+) : RecyclerView.Adapter<OptiTransitionAdapter.MyPostViewHolder>() {
 
     private var tagName: String = OptiTransitionAdapter::class.java.simpleName
     private var myTransitionList = transitionList
@@ -28,7 +31,9 @@ class OptiTransitionAdapter (transitionList: ArrayList<String>, val context: Con
     private var selectedTransition: String? = null
 
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): MyPostViewHolder {
-        return MyPostViewHolder(LayoutInflater.from(context).inflate(R.layout.opti_playback_view, p0, false))
+        return MyPostViewHolder(
+            LayoutInflater.from(context).inflate(R.layout.opti_playback_view, p0, false)
+        )
     }
 
     override fun onBindViewHolder(holder: MyPostViewHolder, position: Int) {
@@ -43,7 +48,7 @@ class OptiTransitionAdapter (transitionList: ArrayList<String>, val context: Con
         }
 
         holder.tvSpeed.setOnClickListener {
-            //selected transition will be saved here
+            // selected transition will be saved here
             selectedPosition = position
             selectedTransition = myTransitionList[holder.adapterPosition]
             notifyDataSetChanged()

@@ -26,13 +26,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import com.obs.marveleditor.utils.OptiConstant
-import com.obs.marveleditor.R
-import com.obs.marveleditor.interfaces.OptiFFMpegCallback
-import com.obs.marveleditor.utils.VideoUtils.buildMediaSource
-import com.obs.marveleditor.utils.VideoUtils.secToTime
-import com.obs.marveleditor.utils.VideoFrom
-import com.obs.marveleditor.interfaces.OptiDialogueHelper
 import com.github.guilhe.views.SeekBarRangedView
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.source.TrackGroupArray
@@ -41,12 +34,20 @@ import com.google.android.exoplayer2.trackselection.TrackSelectionArray
 import com.google.android.exoplayer2.ui.PlayerView
 import com.google.android.exoplayer2.util.Util
 import com.obs.marveleditor.OptiVideoEditor
+import com.obs.marveleditor.R
+import com.obs.marveleditor.interfaces.OptiDialogueHelper
+import com.obs.marveleditor.interfaces.OptiFFMpegCallback
 import com.obs.marveleditor.utils.OptiCommonMethods
+import com.obs.marveleditor.utils.OptiConstant
 import com.obs.marveleditor.utils.OptiUtils
+import com.obs.marveleditor.utils.VideoFrom
+import com.obs.marveleditor.utils.VideoUtils.buildMediaSource
+import com.obs.marveleditor.utils.VideoUtils.secToTime
 import java.io.File
 import kotlin.math.roundToLong
 
-class OptiAddMusicFragment : OptiBaseCreatorDialogFragment(), OptiDialogueHelper, OptiFFMpegCallback {
+class OptiAddMusicFragment :
+    OptiBaseCreatorDialogFragment(), OptiDialogueHelper, OptiFFMpegCallback {
 
     private var tagName: String = OptiAddMusicFragment::class.java.simpleName
     private var audioFile: File? = null
@@ -76,7 +77,11 @@ class OptiAddMusicFragment : OptiBaseCreatorDialogFragment(), OptiDialogueHelper
     private var maxSeekValue: Float = 0F
     private var mContext: Context? = null
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
 
         val inflate = inflater.inflate(R.layout.opti_add_music_includer, container, false)
@@ -115,18 +120,24 @@ class OptiAddMusicFragment : OptiBaseCreatorDialogFragment(), OptiDialogueHelper
             checkPermission(OptiConstant.AUDIO_GALLERY, Manifest.permission.READ_EXTERNAL_STORAGE)
         }
 
-        sbrvVideoTrim?.setOnSeekBarRangedChangeListener(object : SeekBarRangedView.OnSeekBarRangedChangeListener {
-            override fun onChanged(view: SeekBarRangedView?, minValue: Float, maxValue: Float) {
-                exoPlayer?.seekTo(minValue.toLong())
-            }
+        sbrvVideoTrim?.setOnSeekBarRangedChangeListener(
+            object : SeekBarRangedView.OnSeekBarRangedChangeListener {
+                override fun onChanged(view: SeekBarRangedView?, minValue: Float, maxValue: Float) {
+                    exoPlayer?.seekTo(minValue.toLong())
+                }
 
-            override fun onChanging(view: SeekBarRangedView?, minValue: Float, maxValue: Float) {
-                minSeekValue = minValue
-                maxSeekValue = maxValue
-                actvStartTime?.text = secToTime(minValue.toLong())
-                actvEndTime?.text = secToTime(maxValue.toLong())
+                override fun onChanging(
+                    view: SeekBarRangedView?,
+                    minValue: Float,
+                    maxValue: Float,
+                ) {
+                    minSeekValue = minValue
+                    maxSeekValue = maxValue
+                    actvStartTime?.text = secToTime(minValue.toLong())
+                    actvEndTime?.text = secToTime(maxValue.toLong())
+                }
             }
-        })
+        )
 
         setControls(false)
     }
@@ -142,10 +153,13 @@ class OptiAddMusicFragment : OptiBaseCreatorDialogFragment(), OptiDialogueHelper
     }
 
     private fun initializePlayer() {
-        exoPlayer = ExoPlayerFactory.newSimpleInstance(
-            activity, DefaultRenderersFactory(activity),
-            DefaultTrackSelector(), DefaultLoadControl()
-        )
+        exoPlayer =
+            ExoPlayerFactory.newSimpleInstance(
+                activity,
+                DefaultRenderersFactory(activity),
+                DefaultTrackSelector(),
+                DefaultLoadControl(),
+            )
 
         ePlayer?.player = exoPlayer
 
@@ -160,7 +174,6 @@ class OptiAddMusicFragment : OptiBaseCreatorDialogFragment(), OptiDialogueHelper
         exoPlayer?.seekTo(currentWindow, playbackPosition)
 
         acbCrop?.setOnClickListener {
-
             stopRunningProcess()
 
             if (!isRunning()) {
@@ -175,9 +188,14 @@ class OptiAddMusicFragment : OptiBaseCreatorDialogFragment(), OptiDialogueHelper
                 Log.v(tagName, "trimDurationLong: $trimDurationLong")*/
 
                 if (trimDuration.roundToLong() >= seekToValue) {
-                    Toast.makeText(activity, "Please trim audio under $convertedSeekValue.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                            activity,
+                            "Please trim audio under $convertedSeekValue.",
+                            Toast.LENGTH_SHORT,
+                        )
+                        .show()
                 } else {
-                    //output file is generated and send to video processing
+                    // output file is generated and send to video processing
                     val outputFile = OptiUtils.createAudioFile(context!!)
                     Log.v(tagName, "outputFile: ${outputFile.absolutePath}")
 
@@ -198,72 +216,63 @@ class OptiAddMusicFragment : OptiBaseCreatorDialogFragment(), OptiDialogueHelper
         }
     }
 
-    private val playerListener = object : Player.EventListener {
-        override fun onPlaybackParametersChanged(playbackParameters: PlaybackParameters?) {
-        }
+    private val playerListener =
+        object : Player.EventListener {
+            override fun onPlaybackParametersChanged(playbackParameters: PlaybackParameters?) {}
 
-        override fun onSeekProcessed() {
-        }
+            override fun onSeekProcessed() {}
 
-        override fun onTracksChanged(trackGroups: TrackGroupArray?, trackSelections: TrackSelectionArray?) {
-        }
+            override fun onTracksChanged(
+                trackGroups: TrackGroupArray?,
+                trackSelections: TrackSelectionArray?,
+            ) {}
 
-        override fun onPlayerError(error: ExoPlaybackException?) {
-        }
+            override fun onPlayerError(error: ExoPlaybackException?) {}
 
-        override fun onLoadingChanged(isLoading: Boolean) {
-            pbLoading?.visibility = if (isLoading) View.VISIBLE else View.GONE
-        }
+            override fun onLoadingChanged(isLoading: Boolean) {
+                pbLoading?.visibility = if (isLoading) View.VISIBLE else View.GONE
+            }
 
-        override fun onPositionDiscontinuity(reason: Int) {
-        }
+            override fun onPositionDiscontinuity(reason: Int) {}
 
-        override fun onRepeatModeChanged(repeatMode: Int) {
-        }
+            override fun onRepeatModeChanged(repeatMode: Int) {}
 
-        override fun onShuffleModeEnabledChanged(shuffleModeEnabled: Boolean) {
-        }
+            override fun onShuffleModeEnabledChanged(shuffleModeEnabled: Boolean) {}
 
-        override fun onTimelineChanged(timeline: Timeline?, manifest: Any?, reason: Int) {
+            override fun onTimelineChanged(timeline: Timeline?, manifest: Any?, reason: Int) {}
 
-        }
+            override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
 
-        override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
+                if (!playWhenReady && playbackState == Player.STATE_READY) {
 
-            if (!playWhenReady && playbackState == Player.STATE_READY) {
-
-                if (playWhenReady) {
-                    playPause = true
-                    activity?.let {
+                    if (playWhenReady) {
+                        playPause = true
+                        activity?.let {}
+                    } else {
+                        playPause = true
+                        activity?.let {}
                     }
-                } else {
-                    playPause = true
-                    activity?.let {
-                    }
-                }
 
-                if (!durationSet) {
-                    durationSet = true
-                    val duration = exoPlayer?.duration
-                    sbrvVideoTrim?.maxValue = duration?.toFloat()!!
-                    actvStartTime?.text = secToTime(0)
-                    actvEndTime?.text = secToTime(duration)
-                    //set min & max seek value for audio trimming
-                    minSeekValue = 0F
-                    maxSeekValue = duration.toFloat()
+                    if (!durationSet) {
+                        durationSet = true
+                        val duration = exoPlayer?.duration
+                        sbrvVideoTrim?.maxValue = duration?.toFloat()!!
+                        actvStartTime?.text = secToTime(0)
+                        actvEndTime?.text = secToTime(duration)
+                        // set min & max seek value for audio trimming
+                        minSeekValue = 0F
+                        maxSeekValue = duration.toFloat()
+                    }
                 }
             }
         }
-    }
 
     override fun onPause() {
         super.onPause()
         releasePlayer()
     }
 
-    override fun setMode(mode: Int) {
-
-    }
+    override fun setMode(mode: Int) {}
 
     override fun setHelper(helper: CallBacks) {
         this.helper = helper
@@ -273,13 +282,9 @@ class OptiAddMusicFragment : OptiBaseCreatorDialogFragment(), OptiDialogueHelper
         this.seekToValue = duration
     }
 
-    override fun dismiss() {
+    override fun dismiss() {}
 
-    }
-
-    override fun permissionsBlocked() {
-
-    }
+    override fun permissionsBlocked() {}
 
     override fun onStop() {
         super.onStop()
@@ -296,28 +301,45 @@ class OptiAddMusicFragment : OptiBaseCreatorDialogFragment(), OptiDialogueHelper
         requestPermissions(arrayOf(permission), requestCode)
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray,
+    ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
             OptiConstant.AUDIO_GALLERY -> {
                 for (permission in permissions) {
-                    if (ActivityCompat.shouldShowRequestPermissionRationale(activity as Activity, permission)) {
-                        //Toast.makeText(this@EditProfileActivity, "Permission Denied", Toast.LENGTH_SHORT).show()
+                    if (
+                        ActivityCompat.shouldShowRequestPermissionRationale(
+                            activity as Activity,
+                            permission,
+                        )
+                    ) {
+                        // Toast.makeText(this@EditProfileActivity, "Permission Denied",
+                        // Toast.LENGTH_SHORT).show()
                     } else {
-                        if (ActivityCompat.checkSelfPermission(
-                                activity as Activity,
-                                permission
-                            ) == PackageManager.PERMISSION_GRANTED
+                        if (
+                            ActivityCompat.checkSelfPermission(activity as Activity, permission) ==
+                                PackageManager.PERMISSION_GRANTED
                         ) {
-                            //call the gallery intent
-                            val i = Intent(Intent.ACTION_PICK, MediaStore.Audio.Media.EXTERNAL_CONTENT_URI)
+                            // call the gallery intent
+                            val i =
+                                Intent(
+                                    Intent.ACTION_PICK,
+                                    MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
+                                )
                             i.putExtra(Intent.EXTRA_MIME_TYPES, arrayOf("audio/*", "video/*"))
                             startActivityForResult(i, OptiConstant.AUDIO_GALLERY)
-
                         } else {
                             val intent = Intent()
                             intent.action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
-                            val uri = Uri.fromParts("package", context!!.applicationContext.packageName, null)
+                            val uri =
+                                Uri.fromParts(
+                                    "package",
+                                    context!!.applicationContext.packageName,
+                                    null,
+                                )
                             intent.data = uri
                             startActivityForResult(intent, 300)
                         }
@@ -335,9 +357,7 @@ class OptiAddMusicFragment : OptiBaseCreatorDialogFragment(), OptiDialogueHelper
 
         when (requestCode) {
             OptiConstant.AUDIO_GALLERY -> {
-                data?.let {
-                    setFilePath(resultCode, it, OptiConstant.AUDIO_GALLERY)
-                }
+                data?.let { setFilePath(resultCode, it, OptiConstant.AUDIO_GALLERY) }
             }
         }
     }
@@ -348,7 +368,10 @@ class OptiAddMusicFragment : OptiBaseCreatorDialogFragment(), OptiDialogueHelper
                 val selectedImage = data.data
 
                 val filePathColumn = arrayOf(MediaStore.MediaColumns.DATA)
-                val cursor = context!!.contentResolver.query(selectedImage!!, filePathColumn, null, null, null)
+                val cursor =
+                    context!!
+                        .contentResolver
+                        .query(selectedImage!!, filePathColumn, null, null, null)
                 if (cursor != null) {
                     cursor.moveToFirst()
                     val columnIndex = cursor.getColumnIndex(filePathColumn[0])
@@ -358,7 +381,7 @@ class OptiAddMusicFragment : OptiBaseCreatorDialogFragment(), OptiDialogueHelper
                         masterAudioFile = File(filePath)
                         masterAudioFile?.let { file ->
                             tvSelectedAudio!!.text = masterAudioFile!!.name.toString()
-                            //setFilePathFromSource(file)
+                            // setFilePathFromSource(file)
                             setControls(true)
 
                             if (Util.SDK_INT <= 23 || exoPlayer == null) {
@@ -367,9 +390,7 @@ class OptiAddMusicFragment : OptiBaseCreatorDialogFragment(), OptiDialogueHelper
                         }
                     }
                 }
-            } catch (e: Exception) {
-
-            }
+            } catch (e: Exception) {}
         }
     }
 
@@ -447,7 +468,7 @@ class OptiAddMusicFragment : OptiBaseCreatorDialogFragment(), OptiDialogueHelper
         stopRunningProcess()
 
         if (!isRunning()) {
-            //output file is generated and send to video processing
+            // output file is generated and send to video processing
             val outputFile = OptiUtils.createVideoFile(context!!)
             Log.v(tagName, "outputFile: ${outputFile.absolutePath}")
 

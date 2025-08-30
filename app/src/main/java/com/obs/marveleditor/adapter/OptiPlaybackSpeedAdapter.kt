@@ -19,8 +19,11 @@ import com.obs.marveleditor.R
 import com.obs.marveleditor.interfaces.OptiPlaybackSpeedListener
 import com.obs.marveleditor.utils.OptiConstant
 
-class OptiPlaybackSpeedAdapter(private val playbackList: ArrayList<String>, val context: Context, optiPlaybackSpeedListener: OptiPlaybackSpeedListener) :
-    RecyclerView.Adapter<OptiPlaybackSpeedAdapter.MyPostViewHolder>() {
+class OptiPlaybackSpeedAdapter(
+    private val playbackList: ArrayList<String>,
+    val context: Context,
+    optiPlaybackSpeedListener: OptiPlaybackSpeedListener,
+) : RecyclerView.Adapter<OptiPlaybackSpeedAdapter.MyPostViewHolder>() {
 
     private var tagName: String = OptiPlaybackSpeedAdapter::class.java.simpleName
     private var myPlaybackList = playbackList
@@ -30,7 +33,9 @@ class OptiPlaybackSpeedAdapter(private val playbackList: ArrayList<String>, val 
     private var selectedTempo: Float = 0F
 
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): MyPostViewHolder {
-        return MyPostViewHolder(LayoutInflater.from(context).inflate(R.layout.opti_playback_view, p0, false))
+        return MyPostViewHolder(
+            LayoutInflater.from(context).inflate(R.layout.opti_playback_view, p0, false)
+        )
     }
 
     override fun getItemCount(): Int {
@@ -50,10 +55,9 @@ class OptiPlaybackSpeedAdapter(private val playbackList: ArrayList<String>, val 
         }
 
         holder.tvSpeed.setOnClickListener {
-
             selectedPosition = position
 
-            //based on selected play back speed - playback & tempo is selected for processing
+            // based on selected play back speed - playback & tempo is selected for processing
             when (playbackList[position]) {
                 OptiConstant.SPEED_0_25 -> {
                     selectedPlayback = 1.75F

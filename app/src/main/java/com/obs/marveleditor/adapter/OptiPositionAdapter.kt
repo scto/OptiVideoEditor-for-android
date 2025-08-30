@@ -18,8 +18,11 @@ import android.widget.TextView
 import com.obs.marveleditor.R
 import com.obs.marveleditor.interfaces.OptiPositionListener
 
-class OptiPositionAdapter(positionList: ArrayList<String>, val context: Context, optiPositionListener: OptiPositionListener) :
-    RecyclerView.Adapter<OptiPositionAdapter.MyPostViewHolder>() {
+class OptiPositionAdapter(
+    positionList: ArrayList<String>,
+    val context: Context,
+    optiPositionListener: OptiPositionListener,
+) : RecyclerView.Adapter<OptiPositionAdapter.MyPostViewHolder>() {
 
     private var tagName: String = OptiPositionAdapter::class.java.simpleName
     private var myPositionList = positionList
@@ -28,7 +31,9 @@ class OptiPositionAdapter(positionList: ArrayList<String>, val context: Context,
     private var selectedPositionItem: String? = null
 
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): MyPostViewHolder {
-        return MyPostViewHolder(LayoutInflater.from(context).inflate(R.layout.opti_playback_view, p0, false))
+        return MyPostViewHolder(
+            LayoutInflater.from(context).inflate(R.layout.opti_playback_view, p0, false)
+        )
     }
 
     override fun getItemCount(): Int {
@@ -48,7 +53,7 @@ class OptiPositionAdapter(positionList: ArrayList<String>, val context: Context,
         }
 
         holder.tvSpeed.setOnClickListener {
-            //selected position will be saved here
+            // selected position will be saved here
             selectedPosition = position
             selectedPositionItem = myPositionList[holder.adapterPosition]
             notifyDataSetChanged()
@@ -56,7 +61,7 @@ class OptiPositionAdapter(positionList: ArrayList<String>, val context: Context,
     }
 
     fun setPosition() {
-        if(selectedPositionItem != null) {
+        if (selectedPositionItem != null) {
             Log.v(tagName, "selectedPositionItem: $selectedPositionItem")
             myPositionListener.selectedPosition(selectedPositionItem!!)
         }

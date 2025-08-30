@@ -20,12 +20,12 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
-import com.obs.marveleditor.utils.OptiConstant
 import com.obs.marveleditor.OptiVideoEditor
 import com.obs.marveleditor.R
 import com.obs.marveleditor.adapter.OptiPositionAdapter
-import com.obs.marveleditor.interfaces.OptiPositionListener
 import com.obs.marveleditor.interfaces.OptiFFMpegCallback
+import com.obs.marveleditor.interfaces.OptiPositionListener
+import com.obs.marveleditor.utils.OptiConstant
 import com.obs.marveleditor.utils.OptiUtils
 import java.io.File
 import java.util.*
@@ -47,7 +47,11 @@ class OptiAddTextFragment : BottomSheetDialogFragment(), OptiPositionListener, O
     private var positionStr: String? = null
     private var mContext: Context? = null
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ): View? {
         rootView = inflater.inflate(R.layout.opti_fragment_add_text, container, false)
         return rootView
     }
@@ -66,12 +70,9 @@ class OptiAddTextFragment : BottomSheetDialogFragment(), OptiPositionListener, O
 
         mContext = context
 
-        ivClose.setOnClickListener {
-            dismiss()
-        }
+        ivClose.setOnClickListener { dismiss() }
 
         ivDone.setOnClickListener {
-
             val text = etText!!.text.toString().trim()
             Log.v(tagName, "userText: $text")
 
@@ -81,9 +82,9 @@ class OptiAddTextFragment : BottomSheetDialogFragment(), OptiPositionListener, O
                 if (selectedPositionItem != null) {
                     dismiss()
 
-                    //get selected position to apply text on video
+                    // get selected position to apply text on video
                     when (selectedPositionItem) {
-                        OptiConstant.BOTTOM_LEFT -> { //not working
+                        OptiConstant.BOTTOM_LEFT -> { // not working
                             positionStr = OptiVideoEditor.POSITION_BOTTOM_LEFT
                         }
 
@@ -108,15 +109,21 @@ class OptiAddTextFragment : BottomSheetDialogFragment(), OptiPositionListener, O
                         }
                     }
 
-                    //output file is generated and send to video processing
+                    // output file is generated and send to video processing
                     val outputFile = OptiUtils.createVideoFile(context!!)
                     Log.v(tagName, "outputFile: ${outputFile.absolutePath}")
 
-                    //get font file
-                    val fontFile = File(
-                        Environment.getExternalStorageDirectory(),
-                        File.separator + OptiConstant.APP_NAME + File.separator + OptiConstant.FONT + File.separator + OptiConstant.DEFAULT_FONT
-                    )
+                    // get font file
+                    val fontFile =
+                        File(
+                            Environment.getExternalStorageDirectory(),
+                            File.separator +
+                                OptiConstant.APP_NAME +
+                                File.separator +
+                                OptiConstant.FONT +
+                                File.separator +
+                                OptiConstant.DEFAULT_FONT,
+                        )
                     Log.v(tagName, "fontPath: ${fontFile.absolutePath}")
 
                     OptiVideoEditor.with(context!!)
@@ -141,7 +148,7 @@ class OptiAddTextFragment : BottomSheetDialogFragment(), OptiPositionListener, O
             }
         }
 
-        //positionList.add(OptiConstant.BOTTOM_LEFT)
+        // positionList.add(OptiConstant.BOTTOM_LEFT)
         positionList.add(OptiConstant.BOTTOM_RIGHT)
         positionList.add(OptiConstant.CENTRE_ALIGN)
         positionList.add(OptiConstant.CENTRE_BOTTOM)

@@ -49,10 +49,17 @@ class OptiConstant {
         const val ADD_ITEMS_IN_STORAGE = 106
         const val MAIN_VIDEO_TRIM = 107
 
-        val PERMISSION_CAMERA = arrayOf(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            Manifest.permission.READ_EXTERNAL_STORAGE)
-        val PERMISSION_STORAGE = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            Manifest.permission.READ_EXTERNAL_STORAGE)
+        val PERMISSION_CAMERA =
+            arrayOf(
+                Manifest.permission.CAMERA,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+            )
+        val PERMISSION_STORAGE =
+            arrayOf(
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+            )
 
         const val BOTTOM_LEFT = "BottomLeft"
         const val BOTTOM_RIGHT = "BottomRight"
@@ -72,6 +79,6 @@ class OptiConstant {
         const val AUDIO_FORMAT = ".mp3"
         const val AVI_FORMAT = ".avi"
 
-        const val VIDEO_LIMIT = 4 //4 minutes
+        const val VIDEO_LIMIT = 4 // 4 minutes
     }
 }

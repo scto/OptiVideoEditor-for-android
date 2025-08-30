@@ -43,7 +43,11 @@ class OptiTransitionFragment : BottomSheetDialogFragment(), OptiFilterListener, 
     private var selectedTransition: String? = null
     private var mContext: Context? = null
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ): View? {
         rootView = inflater.inflate(R.layout.opti_fragment_transition, container, false)
         return rootView
     }
@@ -58,9 +62,7 @@ class OptiTransitionFragment : BottomSheetDialogFragment(), OptiFilterListener, 
 
         mContext = context
 
-        ivClose.setOnClickListener {
-            dismiss()
-        }
+        ivClose.setOnClickListener { dismiss() }
 
         ivDone.setOnClickListener {
             optiTransitionAdapter.setTransition()
@@ -81,20 +83,21 @@ class OptiTransitionFragment : BottomSheetDialogFragment(), OptiFilterListener, 
 
         transitionList.add("Fade in/out")
 
-        optiTransitionAdapter = OptiTransitionAdapter(transitionList, activity!!.applicationContext, this)
+        optiTransitionAdapter =
+            OptiTransitionAdapter(transitionList, activity!!.applicationContext, this)
         rvTransition.adapter = optiTransitionAdapter
         optiTransitionAdapter.notifyDataSetChanged()
     }
 
     private fun applyTransitionAction() {
-        //output file is generated and send to video processing
+        // output file is generated and send to video processing
         val outputFile = OptiUtils.createVideoFile(context!!)
         Log.v(tagName, "outputFile: ${outputFile.absolutePath}")
 
         OptiVideoEditor.with(context!!)
             .setType(OptiConstant.VIDEO_TRANSITION)
             .setFile(videoFile!!)
-             //.setFilter(command)
+            // .setFilter(command)
             .setOutputPath(outputFile.path)
             .setCallback(this)
             .main()
@@ -102,7 +105,7 @@ class OptiTransitionFragment : BottomSheetDialogFragment(), OptiFilterListener, 
         helper?.showLoading(true)
     }
 
-    override fun selectedFilter(filter: String) { //here transition
+    override fun selectedFilter(filter: String) { // here transition
         selectedTransition = filter
     }
 

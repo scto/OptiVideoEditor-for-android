@@ -22,25 +22,23 @@ class OptiVideoOptionFragment : OptiBaseCreatorDialogFragment(), OptiDialogueHel
         this.helper = helper
     }
 
-    override fun setMode(mode: Int) {
+    override fun setMode(mode: Int) {}
 
-    }
+    override fun setFilePathFromSource(file: File) {}
 
-    override fun setFilePathFromSource(file: File) {
+    override fun setDuration(duration: Long) {}
 
-    }
-
-    override fun setDuration(duration: Long) {
-
-    }
-
-    //private var tagName: String = OptiVideoOptionFragment::class.java.simpleName
+    // private var tagName: String = OptiVideoOptionFragment::class.java.simpleName
     private var acivClose: AppCompatImageView? = null
     private var tvGallery: TextView? = null
     private var tvCamera: TextView? = null
     private var helper: CallBacks? = null
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
 
         val inflate = inflater.inflate(R.layout.opti_add_video_includer, container, false)
@@ -53,9 +51,7 @@ class OptiVideoOptionFragment : OptiBaseCreatorDialogFragment(), OptiDialogueHel
         tvGallery = inflate?.findViewById(R.id.tvGallery)
         tvCamera = inflate?.findViewById(R.id.tvCamera)
 
-        acivClose?.setOnClickListener {
-            dialog.dismiss()
-        }
+        acivClose?.setOnClickListener { dialog.dismiss() }
 
         tvGallery?.setOnClickListener {
             dialog.dismiss()
@@ -68,9 +64,7 @@ class OptiVideoOptionFragment : OptiBaseCreatorDialogFragment(), OptiDialogueHel
         }
     }
 
-    override fun permissionsBlocked() {
-
-    }
+    override fun permissionsBlocked() {}
 
     companion object {
         fun newInstance() = OptiVideoOptionFragment()

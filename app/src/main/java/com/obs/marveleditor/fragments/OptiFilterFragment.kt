@@ -30,7 +30,6 @@ import com.obs.marveleditor.utils.OptiConstant
 import com.obs.marveleditor.utils.OptiUtils
 import java.io.File
 
-
 class OptiFilterFragment : BottomSheetDialogFragment(), OptiFilterListener, OptiFFMpegCallback {
 
     private var tagName: String = OptiFilterFragment::class.java.simpleName
@@ -47,7 +46,11 @@ class OptiFilterFragment : BottomSheetDialogFragment(), OptiFilterListener, Opti
     private var bmThumbnail: Bitmap? = null
     private var mContext: Context? = null
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ): View? {
         rootView = inflater.inflate(R.layout.opti_fragment_filter_dialog, container, false)
         return rootView
     }
@@ -62,9 +65,7 @@ class OptiFilterFragment : BottomSheetDialogFragment(), OptiFilterListener, Opti
 
         mContext = context
 
-        ivClose.setOnClickListener {
-            dismiss()
-        }
+        ivClose.setOnClickListener { dismiss() }
 
         ivDone.setOnClickListener {
             optiFilterAdapter.setFilter()
@@ -78,7 +79,7 @@ class OptiFilterFragment : BottomSheetDialogFragment(), OptiFilterListener, Opti
                     }
 
                     "Vertigo" -> {
-                        //showing error
+                        // showing error
                         applyFilterAction("frei0r=vertigo:0.2")
                     }
 
@@ -87,17 +88,19 @@ class OptiFilterFragment : BottomSheetDialogFragment(), OptiFilterListener, Opti
                     }
 
                     "Sobel" -> {
-                        //showing error
+                        // showing error
                         applyFilterAction("hwupload, sobel_opencl=scale=2:delta=10, hwdownload")
                     }
 
                     "Sepia" -> {
-                        //video not playing
-                        applyFilterAction("colorchannelmixer=.393:.769:.189:0:.349:.686:.168:0:.272:.534:.131")
+                        // video not playing
+                        applyFilterAction(
+                            "colorchannelmixer=.393:.769:.189:0:.349:.686:.168:0:.272:.534:.131"
+                        )
                     }
 
                     "Grayscale" -> {
-                        //video not playing
+                        // video not playing
                         applyFilterAction("colorchannelmixer=.3:.4:.3:0:.3:.4:.3:0:.3:.4:.3")
                     }
                 }
@@ -116,18 +119,20 @@ class OptiFilterFragment : BottomSheetDialogFragment(), OptiFilterListener, Opti
         filterList.add("Sepia")
         filterList.add("Grayscale")*/
 
-        bmThumbnail = ThumbnailUtils.createVideoThumbnail(
-            videoFile!!.absolutePath,
-            MediaStore.Video.Thumbnails.FULL_SCREEN_KIND
-        )
+        bmThumbnail =
+            ThumbnailUtils.createVideoThumbnail(
+                videoFile!!.absolutePath,
+                MediaStore.Video.Thumbnails.FULL_SCREEN_KIND,
+            )
 
-        optiFilterAdapter = OptiFilterAdapter(filterList, bmThumbnail!!, activity!!.applicationContext, this)
+        optiFilterAdapter =
+            OptiFilterAdapter(filterList, bmThumbnail!!, activity!!.applicationContext, this)
         rvFilter.adapter = optiFilterAdapter
         optiFilterAdapter.notifyDataSetChanged()
     }
 
     private fun applyFilterAction(command: String) {
-        //output file is generated and send to video processing
+        // output file is generated and send to video processing
         val outputFile = OptiUtils.createVideoFile(context!!)
         Log.v(tagName, "outputFile: ${outputFile.absolutePath}")
 

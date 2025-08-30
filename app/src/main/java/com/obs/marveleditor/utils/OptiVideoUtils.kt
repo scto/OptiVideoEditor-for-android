@@ -20,18 +20,20 @@ object VideoUtils {
 
     fun secToTime(totalSeconds: Long): String {
         return String.format(
-            "%02d:%02d:%02d", TimeUnit.MILLISECONDS.toHours(totalSeconds),
+            "%02d:%02d:%02d",
+            TimeUnit.MILLISECONDS.toHours(totalSeconds),
             TimeUnit.MILLISECONDS.toMinutes(totalSeconds) -
-                    TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(totalSeconds)), // The change is in this line
+                TimeUnit.HOURS.toMinutes(
+                    TimeUnit.MILLISECONDS.toHours(totalSeconds)
+                ), // The change is in this line
             TimeUnit.MILLISECONDS.toSeconds(totalSeconds) -
-                    TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(totalSeconds))
+                TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(totalSeconds)),
         )
     }
 
     fun buildMediaSource(uri: Uri, fromWho: String, userAgent: String = ""): MediaSource? {
 
         when (fromWho) {
-
             VideoFrom.LOCAL -> {
 
                 val dataSpec = DataSpec(uri)
@@ -42,29 +44,27 @@ object VideoUtils {
                 } catch (e: FileDataSource.FileDataSourceException) {
                     e.printStackTrace()
                 }
-                val factory = object : DataSource.Factory {
-                    override fun createDataSource(): DataSource {
-                        return fileDataSource
+                val factory =
+                    object : DataSource.Factory {
+                        override fun createDataSource(): DataSource {
+                            return fileDataSource
+                        }
                     }
-                }
 
                 return ExtractorMediaSource.Factory(factory).createMediaSource(fileDataSource.uri)
             }
 
             VideoFrom.REMOTE -> {
-                return ExtractorMediaSource.Factory(
-                    DefaultHttpDataSourceFactory(userAgent)
-                ).createMediaSource(uri)
+                return ExtractorMediaSource.Factory(DefaultHttpDataSourceFactory(userAgent))
+                    .createMediaSource(uri)
             }
 
             else -> {
                 return null
             }
-
         }
     }
 }
-
 
 class VideoFrom {
     companion object {

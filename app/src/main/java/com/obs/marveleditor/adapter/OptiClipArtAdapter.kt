@@ -20,8 +20,11 @@ import com.obs.marveleditor.R
 import com.obs.marveleditor.interfaces.OptiClipArtListener
 import java.io.File
 
-class OptiClipArtAdapter(clipArtList: ArrayList<String>, val context: Context, optiClipArtListener: OptiClipArtListener) :
-    RecyclerView.Adapter<OptiClipArtAdapter.MyPostViewHolder>() {
+class OptiClipArtAdapter(
+    clipArtList: ArrayList<String>,
+    val context: Context,
+    optiClipArtListener: OptiClipArtListener,
+) : RecyclerView.Adapter<OptiClipArtAdapter.MyPostViewHolder>() {
 
     private var tagName: String = OptiClipArtAdapter::class.java.simpleName
     private var myClipArtList = clipArtList
@@ -30,7 +33,9 @@ class OptiClipArtAdapter(clipArtList: ArrayList<String>, val context: Context, o
     private var selectedFilePath: String? = null
 
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): MyPostViewHolder {
-        return MyPostViewHolder(LayoutInflater.from(context).inflate(R.layout.opti_clipart_view, p0, false))
+        return MyPostViewHolder(
+            LayoutInflater.from(context).inflate(R.layout.opti_clipart_view, p0, false)
+        )
     }
 
     override fun getItemCount(): Int {
@@ -49,7 +54,7 @@ class OptiClipArtAdapter(clipArtList: ArrayList<String>, val context: Context, o
         }
 
         holder.tvClipArt.setOnClickListener {
-            //selected clip art will be saved here
+            // selected clip art will be saved here
             selectedPosition = position
             selectedFilePath = myClipArtList[holder.adapterPosition]
             notifyDataSetChanged()

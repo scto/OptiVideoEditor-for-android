@@ -20,5 +20,4 @@ interface OptiFFMpegCallback {
     fun onNotAvailable(error: Exception)
 
     fun onFinish()
-
 }

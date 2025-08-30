@@ -19,19 +19,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
-import com.obs.marveleditor.utils.OptiConstant
 import com.obs.marveleditor.OptiVideoEditor
 import com.obs.marveleditor.R
 import com.obs.marveleditor.adapter.OptiClipArtAdapter
 import com.obs.marveleditor.adapter.OptiPositionAdapter
 import com.obs.marveleditor.interfaces.OptiClipArtListener
-import com.obs.marveleditor.interfaces.OptiPositionListener
 import com.obs.marveleditor.interfaces.OptiFFMpegCallback
+import com.obs.marveleditor.interfaces.OptiPositionListener
+import com.obs.marveleditor.utils.OptiConstant
 import com.obs.marveleditor.utils.OptiUtils
 import java.io.File
 
-class OptiAddClipArtFragment : BottomSheetDialogFragment(), OptiClipArtListener, OptiPositionListener,
-    OptiFFMpegCallback {
+class OptiAddClipArtFragment :
+    BottomSheetDialogFragment(), OptiClipArtListener, OptiPositionListener, OptiFFMpegCallback {
 
     private var tagName: String = OptiAddClipArtFragment::class.java.simpleName
     private lateinit var rootView: View
@@ -51,7 +51,11 @@ class OptiAddClipArtFragment : BottomSheetDialogFragment(), OptiClipArtListener,
     private var selectedFilePath: String? = null
     private var mContext: Context? = null
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ): View? {
         rootView = inflater.inflate(R.layout.opti_fragment_add_clip_art, container, false)
         return rootView
     }
@@ -75,10 +79,15 @@ class OptiAddClipArtFragment : BottomSheetDialogFragment(), OptiClipArtListener,
 
         val listFile: Array<File>
 
-        val file = File(
-            Environment.getExternalStorageDirectory(),
-            File.separator + OptiConstant.APP_NAME + File.separator + OptiConstant.CLIP_ARTS + File.separator
-        )
+        val file =
+            File(
+                Environment.getExternalStorageDirectory(),
+                File.separator +
+                    OptiConstant.APP_NAME +
+                    File.separator +
+                    OptiConstant.CLIP_ARTS +
+                    File.separator,
+            )
 
         if (file.isDirectory) {
             listFile = file.listFiles()
@@ -87,7 +96,8 @@ class OptiAddClipArtFragment : BottomSheetDialogFragment(), OptiClipArtListener,
             }
         }
 
-        optiClipArtAdapter = OptiClipArtAdapter(clipArtFilePath, activity!!.applicationContext, this)
+        optiClipArtAdapter =
+            OptiClipArtAdapter(clipArtFilePath, activity!!.applicationContext, this)
         rvClipArt.adapter = optiClipArtAdapter
         optiClipArtAdapter.notifyDataSetChanged()
 
@@ -101,9 +111,7 @@ class OptiAddClipArtFragment : BottomSheetDialogFragment(), OptiClipArtListener,
         rvPosition.adapter = optiPositionAdapter
         optiPositionAdapter.notifyDataSetChanged()
 
-        ivClose.setOnClickListener {
-            dismiss()
-        }
+        ivClose.setOnClickListener { dismiss() }
 
         ivDone.setOnClickListener {
             optiClipArtAdapter.setClipArt()
@@ -112,7 +120,7 @@ class OptiAddClipArtFragment : BottomSheetDialogFragment(), OptiClipArtListener,
             if (selectedFilePath != null) {
                 if (selectedPositionItem != null) {
                     dismiss()
-                    //apply clip art based on selected position
+                    // apply clip art based on selected position
                     when (selectedPositionItem) {
                         OptiConstant.BOTTOM_LEFT -> {
                             addClipArtAction(selectedFilePath!!, OptiVideoEditor.BOTTOM_LEFT)
@@ -135,7 +143,10 @@ class OptiAddClipArtFragment : BottomSheetDialogFragment(), OptiClipArtListener,
                         }
                     }
                 } else {
-                    OptiUtils.showGlideToast(activity!!, getString(R.string.error_select_sticker_pos))
+                    OptiUtils.showGlideToast(
+                        activity!!,
+                        getString(R.string.error_select_sticker_pos),
+                    )
                 }
             } else {
                 OptiUtils.showGlideToast(activity!!, getString(R.string.error_select_sticker))
@@ -144,7 +155,7 @@ class OptiAddClipArtFragment : BottomSheetDialogFragment(), OptiClipArtListener,
     }
 
     private fun addClipArtAction(imgPath: String, position: String) {
-        //output file is generated and it is send to video processing
+        // output file is generated and it is send to video processing
         val outputFile = OptiUtils.createVideoFile(context!!)
         Log.v(tagName, "outputFile: ${outputFile.absolutePath}")
 
