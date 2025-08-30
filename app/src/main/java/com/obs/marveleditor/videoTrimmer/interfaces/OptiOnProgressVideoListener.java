@@ -8,5 +8,5 @@
 package com.obs.marveleditor.videoTrimmer.interfaces;
 
 public interface OptiOnProgressVideoListener {
-    void updateProgress(int time, int max, float scale);
+  void updateProgress(int time, int max, float scale);
 }

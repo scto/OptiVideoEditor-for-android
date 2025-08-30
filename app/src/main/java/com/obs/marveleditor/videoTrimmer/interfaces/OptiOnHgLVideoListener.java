@@ -8,5 +8,5 @@
 package com.obs.marveleditor.videoTrimmer.interfaces;
 
 public interface OptiOnHgLVideoListener {
-    void onVideoPrepared();
+  void onVideoPrepared();
 }
