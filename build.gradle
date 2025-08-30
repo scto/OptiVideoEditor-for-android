@@ -20,7 +20,7 @@ buildscript {
     ext.exoPlayerCore = '2.9.3'
     ext.FFmpeg = '0.3.2'
     ext.jcodec = '0.1.9'
-    ext.seekbar = '1.0.3'
+    ext.seekbar = '1.0.5'
     ext.GlideToast = '1.0'
     ext.fresco = '1.9.0'
     ext.sdpSize = '1.0.6'
