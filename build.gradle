@@ -22,7 +22,7 @@ buildscript {
     ext.jcodec = '0.1.9'
     ext.seekbar = '1.0.5'
     ext.GlideToast = '1.0'
-    ext.fresco = '1.14.2'
+    ext.fresco = '3.6.0'
     ext.sdpSize = '1.0.6'
 
     repositories {
