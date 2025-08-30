@@ -15,7 +15,7 @@ buildscript {
     ext.gradleVersion = '5.6.4'
     ext.kotlinVersion = '1.3.41'
     ext.appCompat = '28.0.0'
-    ext.constraint = '1.1.3'
+    ext.constraint = '2.0.4'
     ext.exoPlayer = '2.7.3'
     ext.exoPlayerCore = '2.19.1'
     ext.FFmpeg = '0.3.2'
